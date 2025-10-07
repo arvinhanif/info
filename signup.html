@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="account.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Back button fix */
+    .card { position: relative; }
+    .back-btn {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+    }
+    .title {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    /* Password toggle button */
+    .password-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .password-wrapper input {
+      flex: 1;
+      padding-right: 40px; /* space for eye icon */
+    }
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      cursor: pointer;
+      font-size: 1rem;
+      color: #555;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .toggle-password.active {
+      color: rgb(76,156,255);
+      transform: rotate(360deg) scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <button class="back-btn" onclick="history.back()">
+        <i class="fa-solid fa-arrow-left"></i> Back
+      </button>
+
+      <h2 class="title">Sign Up</h2>
+
+      <form id="signupForm" class="form">
+        <label class="label" for="name">Full Name</label>
+        <input class="input" type="text" id="name" placeholder="আপনার নাম লিখুন" required>
+
+        <label class="label" for="email">Email</label>
+        <!-- ✅ placeholder removed -->
+        <input class="input" type="email" id="email" required>
+
+        <label class="label" for="number">Mobile Number</label>
+        <input class="input" type="text" id="number" placeholder="+8801XXXXXXXXX" required>
+
+        <label class="label" for="address">Address</label>
+        <input class="input" type="text" id="address" placeholder="Your address" required>
+
+        <label class="label" for="password">Password</label>
+        <div class="password-wrapper">
+          <input class="input" type="password" id="password" required>
+          <i class="fa-solid fa-eye toggle-password" data-target="password"></i>
+        </div>
+
+        <label class="label" for="confirm">Confirm Password</label>
+        <div class="password-wrapper">
+          <input class="input" type="password" id="confirm" required>
+          <i class="fa-solid fa-eye toggle-password" data-target="confirm"></i>
+        </div>
+
+        <div class="row">
+          <label class="check">
+            <input type="checkbox" required>
+            <span>I agree to the Terms</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn primary">Create Account</button>
+        <button type="button" class="btn secondary" id="loginBtn">Log In</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="signup.js"></script>
+
+  <!-- ✅ Password toggle script -->
+  <script>
+    document.querySelectorAll(".toggle-password").forEach(icon => {
+      icon.addEventListener("click", () => {
+        const targetId = icon.getAttribute("data-target");
+        const input = document.getElementById(targetId);
+        const type = input.getAttribute("type") === "password" ? "text" : "password";
+        input.setAttribute("type", type);
+
+        // Animation toggle
+        icon.classList.toggle("active");
+
+        // Change icon eye/eye-slash
+        if (type === "text") {
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+        } else {
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+        }
+      });
+    });
+  </script>
+</body>
+</html>

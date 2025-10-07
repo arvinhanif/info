@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Cart</title>
+  <meta name="description" content="Your shopping cart">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+  <header id="navbar" role="navigation">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">CellEX</a>
+      <div class="actions">
+        <a href="index.html" class="btn outline">Back</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="cart-page container" role="main" style="padding:28px 0;">
+    <h2 style="margin-bottom:12px;">Your Cart</h2>
+
+    <div id="cartItems" class="cart-items" style="display:grid; gap:12px;"></div>
+
+    <div class="cart-summary" style="display:flex; justify-content:flex-end; align-items:center; gap:12px; margin-top:18px;">
+      <span id="cartTotal" style="font-weight:700; color:#90c6f3;">Total: ৳0</span>
+      <a class="btn primary" href="checkout.html">Secure Payment</a>
+    </div>
+  </main>
+
+  <footer id="footer" role="contentinfo">
+    <div class="container footer-inner">
+      <div class="company-info"><h3>Company</h3><a href="#">About</a></div>
+      <div class="customer-service"><h3>Help</h3><a href="#">FAQ</a></div>
+      <div class="social"><h3>Follow</h3><a href="#">Instagram</a></div>
+      <div class="newsletter"><h3>Newsletter</h3><input type="email" placeholder="Enter your email"><button class="btn">Subscribe</button></div>
+    </div>
+  </footer>
+
+  <script>
+    const LS = {
+      get(k, fallback){ try { return JSON.parse(localStorage.getItem(k)) ?? fallback; } catch { return fallback; } },
+      set(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+    };
+
+    function renderCart() {
+      const wrap = document.getElementById('cartItems');
+      const cart = LS.get('cart', []);
+      if (!wrap) return;
+      if (!cart.length) {
+        wrap.innerHTML = '<p>No items in cart.</p>';
+        document.getElementById('cartTotal').textContent = 'Total: ৳0';
+        return;
+      }
+      wrap.innerHTML = cart.map(i => `
+        <div class="cart-item">
+          <img src="${i.image}" alt="${i.title}">
+          <div class="item-info" style="flex:1;">
+            <div class="title">${i.title}</div>
+            <div class="meta">৳${Number(i.price).toLocaleString()} each</div>
+          </div>
+          <div class="controls" style="display:flex; align-items:center; gap:8px;">
+            <label for="qty-${i.id}">Qty</label>
+            <input id="qty-${i.id}" class="qty" type="number" min="1" value="${i.qty}" data-id="${i.id}">
+            <button class="btn delete" data-remove="${i.id}">Remove item</button>
+          </div>
+        </div>
+      `).join('');
+      updateTotal();
+    }
+
+    function updateTotal() {
+      const cart = LS.get('cart', []);
+      const total = cart.reduce((s,i)=> s + Number(i.price) * Number(i.qty), 0);
+      document.getElementById('cartTotal').textContent = 'Total: ৳' + total.toLocaleString('en-US');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCart();
+
+      document.getElementById('cartItems').addEventListener('input', (e) => {
+        const qtyEl = e.target.closest('.qty');
+        if (qtyEl) {
+          const id = qtyEl.dataset.id;
+          let cart = LS.get('cart', []);
+          const idx = cart.findIndex(x => x.id === id);
+          if (idx >= 0) {
+            const val = Math.max(1, Number(qtyEl.value || 1));
+            cart[idx].qty = val;
+            LS.set('cart', cart);
+            updateTotal();
+          }
+        }
+      });
+
+      document.getElementById('cartItems').addEventListener('click', (e) => {
+        const rem = e.target.closest('[data-remove]');
+        if (rem) {
+          const id = rem.dataset.remove;
+          let cart = LS.get('cart', []);
+          cart = cart.filter(x => x.id !== id);
+          LS.set('cart', cart);
+          renderCart();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

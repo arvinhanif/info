@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Inbox</title>
+  <link rel="stylesheet" href="admin-orders.css" />
+</head>
+<body>
+  <div class="admin-wrap">
+    <header class="admin-header">
+      <h1>Orders Inbox</h1>
+      <nav class="admin-nav">
+        <a href="admin-confirmed.html" class="nav-btn">Confirmed <span id="countConfirmed" class="badge">0</span></a>
+        <a href="admin-rejected.html" class="nav-btn">Rejected <span id="countRejected" class="badge">0</span></a>
+        <button id="clearAll" class="ghost">Clear inbox</button>
+      </nav>
+    </header>
+
+    <main id="orders" class="orders"></main>
+    <div id="empty" class="empty">No orders in inbox</div>
+  </div>
+
+  <template id="orderTpl">
+    <article class="order-card">
+      <div class="prod-thumb"><img src="" alt="product" /></div>
+
+      <div class="order-main">
+        <div class="order-top">
+          <div class="order-product-title"></div>
+          <div class="order-id"></div>
+        </div>
+
+        <div class="order-product-desc"></div>
+        <div class="order-meta"></div>
+        <div class="order-address"></div>
+        <div class="order-time"></div>
+      </div>
+
+      <div class="order-actions">
+        <button class="btn confirm">Confirm</button>
+        <button class="btn reject">Reject</button>
+        <button class="btn view">View</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="admin-orders.js"></script>
+</body>
+</html>

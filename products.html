@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Products</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Page CSS -->
+  <link rel="stylesheet" href="products.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" aria-label="Primary">
+    <div class="nav-left">
+      <a href="#" class="nav-btn back-btn" id="backBtn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+      <div class="logo">CellEX</div>
+    </div>
+    <div class="nav-actions">
+      <a href="index.html" class="nav-btn"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="cart.html" class="nav-btn"><i class="fa-solid fa-cart-shopping"></i> Cart <span id="cartCount" aria-live="polite">0</span></a>
+    </div>
+  </nav>
+
+  <!-- Hero Banner -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="hero-content">
+      <h1 id="heroTitle">Boat Rockerz 510 Wireless Headphones</h1>
+      <p>Starting from ৳120.36 — Grab the deal now!</p>
+      <a href="#latestProducts" class="btn primary"><i class="fa-solid fa-bolt"></i> Shop Now</a>
+    </div>
+  </section>
+
+  <!-- Latest Products -->
+  <section class="section" id="latestProducts" aria-labelledby="latestHeading">
+    <h2 id="latestHeading"><i class="fa-solid fa-star"></i> Latest Products</h2>
+    <div class="grid" id="productsContainer" aria-live="polite"></div>
+  </section>
+
+  <!-- Best Selling -->
+  <section class="section" aria-labelledby="bestHeading">
+    <h2 id="bestHeading"><i class="fa-solid fa-fire"></i> Best Selling Products</h2>
+    <div class="grid" id="bestSelling" aria-live="polite"></div>
+  </section>
+
+  <!-- Deal of the Day -->
+  <section class="section deal" aria-labelledby="dealHeading">
+    <h2 id="dealHeading"><i class="fa-solid fa-clock"></i> Deal of the Day</h2>
+    <div class="grid" id="dealProducts" aria-live="polite"></div>
+  </section>
+
+  <!-- Shop by Category -->
+  <section class="section categories" aria-labelledby="catHeading">
+    <h2 id="catHeading"><i class="fa-solid fa-list"></i> Shop by Category</h2>
+    <div class="cat-grid">
+      <div class="cat-card"><i class="fa-solid fa-mobile-screen-button"></i><br>Phones</div>
+      <div class="cat-card"><i class="fa-solid fa-clock"></i><br>Smartwatches</div>
+      <div class="cat-card"><i class="fa-solid fa-headphones"></i><br>Headphones</div>
+      <div class="cat-card"><i class="fa-solid fa-laptop"></i><br>Laptops</div>
+      <div class="cat-card"><i class="fa-solid fa-camera"></i><br>Cameras</div>
+    </div>
+  </section>
+
+  <!-- Promo Banners -->
+  <section class="section promos" aria-label="Promotions">
+    <div class="promo">Huawei Smartwatch</div>
+    <div class="promo">Beats Studio3</div>
+    <div class="promo">Apple AirPods</div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 CellEX Store. All rights reserved.</p>
+  </footer>
+
+  <!-- JS -->
+  <script src="products.js"></script>
+</body>
+</html>

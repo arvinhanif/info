@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Button grid inside dashboard (keeps using your existing admin.css styles for cards) */
+    .admin-shortcuts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 12px;
+    }
+    .shortcut {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:16px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.95);
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
+      text-decoration:none;
+      color:#0b1220;
+      font-weight:700;
+      transition:transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .shortcut .icon {
+      width:48px;
+      height:48px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,#f0f6ff,#e6f1ff);
+      color:#064a9c;
+      font-size:1.2rem;
+    }
+    .shortcut:hover {
+      transform:translateY(-6px);
+      box-shadow:0 18px 40px rgba(11,18,32,0.08);
+    }
+    .shortcut .meta { display:flex;flex-direction:column; }
+    .shortcut .meta .title { font-size:1rem; margin-bottom:2px; }
+    .shortcut .meta .desc { font-size:0.88rem; color:#51607a; font-weight:600; }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="admindashboard.html" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+    <a href="users.html"><i class="fa-solid fa-users"></i> Users</a>
+    <a href="adminproducts.html"><i class="fa-solid fa-box"></i> Products</a>
+    <a href="admin-orders.html"><i class="fa-solid fa-inbox"></i> Orders Inbox</a>
+    <a href="admin-confirmed.html"><i class="fa-solid fa-check-circle"></i> Confirmed Orders</a>
+    <a href="admin-rejected.html"><i class="fa-solid fa-xmark-circle"></i> Rejected Orders</a>
+    <a href="admindata.html"><i class="fa-solid fa-database"></i> Admin Data</a>
+    <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="navbar">
+      <h1>Welcome, Admin</h1>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <h3>Overview</h3>
+        <p>This is your admin dashboard. Use the shortcuts below to open any admin page directly.</p>
+
+        <div class="admin-shortcuts" aria-label="Admin shortcuts">
+          <a class="shortcut" href="admin-orders.html" title="Open Orders Inbox">
+            <div class="icon"><i class="fa-solid fa-inbox"></i></div>
+            <div class="meta">
+              <div class="title">Orders Inbox</div>
+              <div class="desc">Review new orders</div>
+            </div>
+          </a>
+
+          <a class="shortcut" href="admin-confirmed.html" title="Open Confirmed Orders">
+            <div class="icon"><i class="fa-solid fa-check-circle"></i></div>
+            <div class="meta">
+              <div class="title">Confirmed Orders</div>
+              <div class="desc">Manage confirmed orders</div>
+            </div>
+          </a>
+
+          <a class="shortcut" href="admin-rejected.html" title="Open Rejected Orders">
+            <div class="icon"><i class="fa-solid fa-xmark-circle"></i></div>
+            <div class="meta">
+              <div class="title">Rejected Orders</div>
+              <div class="desc">Review rejected orders</div>
+            </div>
+          </a>
+
+          <a class="shortcut" href="adminproducts.html" title="Open Products">
+            <div class="icon"><i class="fa-solid fa-box"></i></div>
+            <div class="meta">
+              <div class="title">Products</div>
+              <div class="desc">Add, edit, delete products</div>
+            </div>
+          </a>
+
+          <a class="shortcut" href="users.html" title="Open Users">
+            <div class="icon"><i class="fa-solid fa-users"></i></div>
+            <div class="meta">
+              <div class="title">Users</div>
+              <div class="desc">Manage user accounts</div>
+            </div>
+          </a>
+
+          <a class="shortcut" href="admindata.html" title="Open Admin Data">
+            <div class="icon"><i class="fa-solid fa-database"></i></div>
+            <div class="meta">
+              <div class="title">Admin Data</div>
+              <div class="desc">Export and edit records</div>
+            </div>
+          </a>
+
+          <a class="shortcut" href="settings.html" title="Open Settings">
+            <div class="icon"><i class="fa-solid fa-gear"></i></div>
+            <div class="meta">
+              <div class="title">Settings</div>
+              <div class="desc">App configuration</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Recent Activity</h3>
+        <ul>
+          <li>User <b>Arvin</b> signed up</li>
+          <li>New product added</li>
+          <li>System backup completed</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

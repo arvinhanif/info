@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Admin Card — Orders Inbox</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="admin-card.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="left">
+        <h1>Admin Card — Orders Inbox</h1>
+      </div>
+      <div class="right">
+        <button id="refreshBtn" class="btn primary"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
+        <a href="admin.html" class="btn ghost"><i class="fa-solid fa-arrow-left"></i> Back to Admin</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="controls">
+      <div>
+        <button id="scanAllBtn" class="btn secondary"><i class="fa-solid fa-magnifying-glass"></i> Scan users & carts</button>
+        <button id="clearInboxBtn" class="btn delete"><i class="fa-solid fa-trash"></i> Clear Inbox</button>
+      </div>
+      <div>
+        <label><input type="checkbox" id="autoCapture" checked> Auto-capture cart changes</label>
+      </div>
+    </section>
+
+    <section id="inboxWrap" class="inbox">
+      <!-- Admin card entries will be rendered here -->
+    </section>
+
+    <aside class="stats">
+      <div><strong>Total entries:</strong> <span id="totalCount">0</span></div>
+      <div><strong>Pending:</strong> <span id="pendingCount">0</span></div>
+      <div><strong>Confirmed:</strong> <span id="confirmedCount">0</span></div>
+    </aside>
+  </main>
+
+  <template id="entryTpl">
+    <article class="card-entry">
+      <div class="prod">
+        <img class="prod-img" src="" alt="">
+        <div class="prod-meta">
+          <div class="prod-name"></div>
+          <div class="prod-price"></div>
+          <div class="prod-qty"></div>
+        </div>
+      </div>
+
+      <div class="user">
+        <div class="user-meta">
+          <div class="user-name"></div>
+          <div class="user-email"></div>
+          <div class="user-number"></div>
+        </div>
+      </div>
+
+      <div class="meta-right">
+        <div class="ts"></div>
+        <div class="actions">
+          <button class="btn confirm"><i class="fa-solid fa-check"></i> Confirm</button>
+          <button class="btn reject"><i class="fa-solid fa-xmark"></i> Reject</button>
+          <button class="btn delete small"><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="admin-card.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="site-light">
+
+  <!-- Top header -->
+  <header style="position:sticky;top:0;z-index:80;background:transparent;padding:12px 20px;">
+    <div style="max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:flex-end;gap:12px;">
+      <a id="accountBtn" href="#" class="nav-btn" style="text-decoration:none;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.6);box-shadow:0 6px 14px rgba(120,140,170,0.12);color:rgb(11,18,32);font-weight:700;">
+        <i class="fa-regular fa-user"></i> Account
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <div class="profile-card" role="main" aria-labelledby="profileHeading">
+      <div class="header">
+
+        <!-- Back -->
+        <button class="back-btn" aria-label="Back" onclick="goBack()">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back
+        </button>
+
+        <!-- Edit -->
+        <button class="edit-icon" title="Edit profile" aria-label="Edit profile" onclick="openDialog()">
+          <i class="fa-solid fa-pen" aria-hidden="true"></i>
+        </button>
+
+        <!-- Avatar -->
+        <div class="profile-pic" role="img" aria-label="Profile photo" tabindex="0" onclick="showProfilePhoto()">
+          <img src="https://via.placeholder.com/130" alt="Profile Picture">
+        </div>
+
+        <!-- Info -->
+        <h2 id="profileHeading" class="name">Guest</h2>
+        <p class="title">Email</p>
+        <p class="location">Address</p>
+
+        <div class="follow-stats" aria-live="polite">
+          <span id="followCount">0 Followers</span> •
+          <span id="followingCount">0 Following</span>
+        </div>
+
+        <!-- Primary actions -->
+        <div class="buttons" role="toolbar" aria-label="Profile actions">
+          <button class="btn primary" id="followBtn" aria-pressed="false">Follow</button>
+          <button class="btn secondary" onclick="openFollowers()" aria-haspopup="dialog">Followers</button>
+          <button class="btn secondary" onclick="openMessageDialog()" aria-haspopup="dialog">Message</button>
+          <button class="btn logout" id="logoutBtn">Logout</button>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="quick-actions" aria-hidden="false">
+          <button class="btn secondary" id="openWishlistBtn">Wishlist</button>
+          <button class="btn secondary" id="openOrdersBtn">Orders</button>
+          <button class="btn secondary" id="openNotifBtn">Notifications</button>
+          <button class="btn secondary" id="changePassBtn">Change Password</button>
+          <button class="btn ghost" id="themeToggleBtn">Toggle Theme</button>
+          <button class="btn secondary" id="exportDataBtn">Export Data</button>
+          <button class="btn logout" id="deleteAccountBtn">Delete Account</button>
+        </div>
+
+      </div>
+
+      <div class="info-cards" aria-label="Profile information">
+        <div class="card" role="group" aria-labelledby="personalInfo">
+          <h4 id="personalInfo"><i class="fa-regular fa-id-badge"></i> Personal Info</h4>
+          <p><strong>Name:</strong> <span class="name">Guest</span></p>
+          <p><strong>Email:</strong> <span class="title">Email</span></p>
+          <p><strong>Address:</strong> <span class="location">Address</span></p>
+          <p><strong>Number:</strong> <span class="number">+8801XXXXXXXXX</span></p>
+        </div>
+
+        <div class="card" role="group" aria-labelledby="accountQuick">
+          <h4 id="accountQuick"><i class="fa-solid fa-key"></i> Account Quick Actions</h4>
+          <p style="margin:0 0 8px;">Change password, manage sessions, and security settings.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn ghost" style="text-decoration:none" href="settings.html">Settings</a>
+            <button class="btn secondary" onclick="showMessages()">Messages</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Overlay -->
+  <div class="dialog-overlay" id="overlay" aria-hidden="true"></div>
+
+  <!-- Edit Profile Dialog (includes custom file input) -->
+  <div class="profile-dialog" id="dialog" role="dialog" aria-modal="true" aria-labelledby="editProfileTitle">
+    <h3 id="editProfileTitle">Edit Profile</h3>
+
+    <!-- Custom file input -->
+    <div class="input-file" id="profileFile">
+      <label class="input-file-label" for="photoInput">
+        <span class="input-file-thumb" id="photoThumb" aria-hidden="true">
+          <img id="photoThumbImg" src="https://via.placeholder.com/72" alt="" />
+        </span>
+        <span class="input-file-meta">
+          <span class="input-file-title">Profile photo</span>
+          <span class="input-file-name" id="photoName">No file chosen</span>
+        </span>
+        <span class="input-file-actions">
+          <button type="button" class="btn ghost" id="photoChooseBtn">Choose</button>
+          <button type="button" class="btn secondary" id="photoClearBtn" style="display:none;">Remove</button>
+        </span>
+      </label>
+      <input type="file" id="photoInput" accept="image/*" class="input-file-input" aria-label="Upload profile photo">
+    </div>
+
+    <label for="name">Name</label>
+    <input type="text" id="name" value="" aria-label="Name">
+
+    <label for="title">Email</label>
+    <input type="email" id="title" value="" aria-label="Email">
+
+    <label for="location">Address</label>
+    <input type="text" id="location" value="" aria-label="Address">
+
+    <label for="number">Phone Number</label>
+    <input type="tel" id="number" value="" aria-label="Phone number">
+
+    <div class="dialog-actions">
+      <button class="btn secondary" onclick="closeDialog()">Cancel</button>
+      <button class="btn primary" onclick="saveProfile()">Save</button>
+    </div>
+  </div>
+
+  <!-- Message Dialog -->
+  <div class="message-dialog" id="messageDialog" role="dialog" aria-modal="true" aria-labelledby="msgTitle">
+    <h3 id="msgTitle">Message <span id="messageRecipient">User</span></h3>
+    <label for="messageText">Your message</label>
+    <textarea id="messageText" rows="4" placeholder="Write something…" aria-label="Message text"></textarea>
+    <div class="dialog-actions">
+      <button class="btn secondary" onclick="closeDialog()">Cancel</button>
+      <button class="btn primary" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- Followers, Wishlist, Orders, Notifications, Change Password, Delete -->
+  <div class="message-dialog" id="followersDialog" role="dialog" aria-modal="true" aria-labelledby="followersTitle">
+    <h3 id="followersTitle">Followers</h3>
+    <div id="followersList" class="scroll-list" style="margin-top:8px;"></div>
+    <div class="dialog-actions">
+      <button class="btn secondary" onclick="closeDialog()">Close</button>
+    </div>
+  </div>
+
+  <div class="message-dialog" id="wishlistDialog" role="dialog" aria-modal="true" aria-labelledby="wishlistTitle">
+    <h3 id="wishlistTitle">Wishlist</h3>
+    <div id="wishlistList" class="scroll-list" style="margin-top:8px;"></div>
+    <div class="dialog-actions">
+      <button class="btn secondary" onclick="closeDialog()">Close</button>
+    </div>
+  </div>
+
+  <div class="message-dialog" id="ordersDialog" role="dialog" aria-modal="true" aria-labelledby="ordersTitle">
+    <h3 id="ordersTitle">Orders</h3>
+    <div id="ordersList" class="scroll-list" style="margin-top:8px;"></div>
+    <div class="dialog-actions">
+      <button class="btn secondary" onclick="closeDialog()">Close</button>
+    </div>
+  </div>
+
+  <div class="message-dialog" id="notifDialog" role="dialog" aria-modal="true" aria-labelledby="notifTitle">
+    <h3 id="notifTitle">Notification Preferences</h3>
+    <div style="margin-top:8px">
+      <label><input type="checkbox" id="notif_email"> Email</label><br>
+      <label><input type="checkbox" id="notif_sms"> SMS</label><br>
+      <label><input type="checkbox" id="notif_inapp"> In-app</label>
+    </div>
+    <div class="dialog-actions">
+      <button class="btn secondary" onclick="closeDialog()">Cancel</button>
+      <button class="btn primary" id="saveNotifBtn">Save</button>
+    </div>
+  </div>
+
+  <div class="profile-dialog" id="changePassDialog" role="dialog" aria-modal="true" aria-labelledby="changePassTitle">
+    <h3 id="changePassTitle">Change Password</h3>
+    <label for="currentPass">Current Password</label>
+    <input type="password" id="currentPass" autocomplete="current-password">
+    <label for="newPass">New Password</label>
+    <input type="password" id="newPass" autocomplete="new-password">
+    <label for="confirmPass">Confirm New Password</label>
+    <input type="password" id="confirmPass" autocomplete="new-password">
+    <div class="dialog-actions">
+      <button class="btn secondary" onclick="closeDialog()">Cancel</button>
+      <button class="btn primary" id="doChangePassBtn">Change</button>
+    </div>
+  </div>
+
+  <div class="message-dialog" id="deleteConfirmDialog" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+    <h3 id="deleteTitle">Delete Account</h3>
+    <p>Deleting your account will remove local profile data. This action cannot be undone.</p>
+    <div class="dialog-actions">
+      <button class="btn secondary" onclick="closeDialog()">Cancel</button>
+      <button class="btn logout" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="dashboard.js" defer></script>
+</body>
+</html>

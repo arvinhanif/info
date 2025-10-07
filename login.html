@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="account.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Back button fix */
+    .card { position: relative; }
+    .back-btn {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+    }
+    .title {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    /* Password toggle button */
+    .password-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .password-wrapper input {
+      flex: 1;
+      padding-right: 40px; /* space for eye icon */
+    }
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      cursor: pointer;
+      font-size: 1rem;
+      color: #555;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .toggle-password.active {
+      color: rgb(76,156,255);
+      transform: rotate(360deg) scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <!-- Back button -->
+      <button class="back-btn" onclick="history.back()">
+        <i class="fa-solid fa-arrow-left"></i> Back
+      </button>
+
+      <!-- Title -->
+      <h2 class="title">Login</h2>
+
+      <form id="loginForm" class="form">
+        <label class="label" for="username">Email</label>
+        <!-- ✅ placeholder removed -->
+        <input class="input" type="email" id="username" required />
+
+        <label class="label" for="password">Password</label>
+        <div class="password-wrapper">
+          <input class="input" type="password" id="password" required />
+          <!-- ✅ Show/Hide toggle -->
+          <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+        </div>
+
+        <div class="row">
+          <label class="check">
+            <input type="checkbox" id="remember" />
+            <span>Remember me</span>
+          </label>
+
+          <!-- Sign Up button -->
+          <button type="button" class="btn secondary" id="signupBtn">Sign Up</button>
+        </div>
+
+        <!-- Login button -->
+        <button type="submit" class="btn primary">Login</button>
+
+        <!-- Admin Login button -->
+        <button type="button" class="btn secondary" id="adminBtn">
+          <i class="fa-solid fa-user-shield"></i> Admin Login
+        </button>
+      </form>
+
+      <div class="divider">
+        <span>or login with</span>
+      </div>
+
+      <div class="socials">
+        <button class="icon-btn" aria-label="Login with Facebook">
+          <i class="fa-brands fa-facebook-f"></i>
+        </button>
+        <button class="icon-btn" aria-label="Login with Google">
+          <i class="fa-brands fa-google"></i>
+        </button>
+        <button class="icon-btn" aria-label="Login with LinkedIn">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </button>
+        <button class="icon-btn" aria-label="Login with X">
+          <i class="fa-brands fa-x-twitter"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div id="toast" class="toast"></div>
+
+  <!-- External JS file -->
+  <script src="login.js"></script>
+
+  <!-- ✅ Password toggle script -->
+  <script>
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordInput = document.getElementById("password");
+
+    togglePassword.addEventListener("click", () => {
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+
+      // Animation toggle
+      togglePassword.classList.toggle("active");
+
+      // Change icon eye/eye-slash
+      if (type === "text") {
+        togglePassword.classList.remove("fa-eye");
+        togglePassword.classList.add("fa-eye-slash");
+      } else {
+        togglePassword.classList.remove("fa-eye-slash");
+        togglePassword.classList.add("fa-eye");
+      }
+    });
+  </script>
+</body>
+</html>
