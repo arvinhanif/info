@@ -810,3 +810,90 @@ body.site-light {
   .site-footer #newsletter button { width: 100%; }
   .site-footer .socials a { width: 36px; height: 36px; }
 }
+
+/* -------------------------------
+   MOBILE OVERFLOW & RESPONSIVE FIXES
+   (add these near the end to ensure precedence)
+   ------------------------------- */
+
+/* smoother font rendering */
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* allow flex/grid children to shrink on small screens */
+.row, .container, .header-inner, .footer-inner, .hero-section .row { min-width: 0; }
+.header-inner > * { min-width: 0; }
+
+/* ensure images never force overflow */
+img, picture, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* prevent long words or URLs from expanding layout */
+body, p, h1, h2, h3, h4, h5, h6, a, span {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* make horizontal lists scrollable instead of overflowing layout */
+.cat-list {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+}
+.cat-list li { min-width: 0; }
+
+/* ensure product-card inner flex items can shrink */
+#homeProducts .product-card,
+#homeProducts .product-card .info,
+#homeProducts .product-card .thumb {
+  min-width: 0;
+}
+
+/* keep captions inside hero images */
+.hero-caption, .hero-caption.caption-center {
+  max-width: 96%;
+  box-sizing: border-box;
+  word-break: break-word;
+}
+
+/* make header grid responsive and avoid fixed 180px overflow on small screens */
+@media (max-width: 920px) {
+  .header-inner { grid-template-columns: 140px 1fr auto; gap: 10px; }
+  .brand img { height: 40px; }
+}
+
+/* stronger small-screen constraints: force flexible layout */
+@media (max-width: 768px) {
+  html, body { -webkit-text-size-adjust: 100%; }
+  .container { padding-left: 12px; padding-right: 12px; }
+  .header-inner { grid-template-columns: 1fr; }
+  .header-actions { justify-content: flex-end; gap: 8px; }
+  .cat-list { gap: 8px; padding-left: 6px; padding-right: 6px; }
+  .hero-small.hero-side img,
+  .hero-large.hero-center img { object-fit: cover; width: 100%; height: auto; max-height: 320px; }
+
+  /* make stacked side banners not overflow vertically or horizontally */
+  .gap-stack { gap: 12px; }
+  .hero-small.hero-side { height: auto; min-height: 160px; }
+
+  /* product cards: let thumb scale and preserve layout */
+  #homeProducts .product-card .thumb { height: auto; max-height: 240px; }
+  #homeProducts .product-card { min-height: 0; }
+
+  /* fixed-position widgets: avoid covering content on small screens */
+  .compare-btn { right: 12px; bottom: 12px; }
+  .chat-widget { left: 12px; bottom: 12px; grid-template-columns: auto; gap: 6px; align-items: center; }
+  .chat-body { order: 2; }
+  .chat-bubble { order: 1; }
+
+  /* reduce oversized paddings that can create horizontal scroll */
+  .top-utility-inner, .header-inner, .footer-inner { padding-left: 6px; padding-right: 6px; }
+}
+
+/* hide any accidental horizontal overflow on the root */
+html, body {
+  overflow-x: hidden;
+}
