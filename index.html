@@ -1,4 +1,3 @@
-<!-- File: index.html -->
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -26,8 +25,6 @@
   <div class="top-utility">
     <div class="container top-utility-inner">
       <div class="left">
-        <a href="#" class="small"><i class="fa-solid fa-truck-fast"></i> Order Tracking</a>
-        <a href="#" class="small"><i class="fa-solid fa-headset"></i> Service Center</a>
         <a href="#" class="small"><i class="fa-solid fa-map-marker-alt"></i> Store Locations</a>
       </div>
       <div class="right">
@@ -41,7 +38,7 @@
   <header class="main-header">
     <div class="container header-inner">
       <div class="brand">
-        <a href="index.html"><img src="1st.png" alt="CellEX logo"> </a>
+        <a href="index.html"><img src="1ST.png" alt="CellEX logo"> </a>
       </div>
 
       <div class="search-wrap">
@@ -78,39 +75,60 @@
   </header>
 
   <main>
-    <!-- hero banners -->
+    <!-- hero banners (left: two stacked small, center: large, right: two stacked small) -->
     <section class="hero-section">
       <div class="container">
-        <div class="row gx-3">
-          <div class="col-lg-6">
-            <div class="hero-large">
-              <img src="1ST.png" alt="iPhone promo">
-              <div class="hero-caption">
-                <h1>iPhone 16 Series</h1>
+        <div class="row gx-3 align-items-stretch">
+          <!-- LEFT column: two stacked small banners -->
+          <div class="col-lg-3 col-md-6 order-lg-1 order-1 d-flex flex-column gap-stack">
+            <div class="hero-small hero-side w-100">
+              <img src="9th.jpg" alt="Left promo top">
+              <div class="hero-caption small">
+                <h4>Hot Deals</h4>
+                <p>Compact picks for daily use</p>
+                <a href="#product-grid" class="btn-ghost">Explore</a>
+              </div>
+            </div>
+
+            <div class="hero-small hero-side w-100">
+              <img src="5th.jpg" alt="Left promo bottom">
+              <div class="hero-caption small">
+                <h4>Budget Phones</h4>
+                <p>Value for money choices</p>
+                <a href="#product-grid" class="btn-ghost">See Offers</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- CENTER column: single large landscape banner -->
+          <div class="col-lg-6 col-md-12 order-lg-2 order-2 d-flex">
+            <div class="hero-large hero-center w-100">
+              <img src="5th.jpg" alt="Center promo">
+              <div class="hero-caption caption-center">
+                <h1>iPhone 17 Series</h1>
                 <p>Supreme Intelligence. Shop the latest models.</p>
                 <a href="#product-grid" class="btn-primary"><i class="fa-solid fa-shop"></i> SHOP NOW</a>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-3 col-md-6">
-            <div class="hero-small">
-              <img src="1ST.png" alt="Laptop deals">
+          <!-- RIGHT column: two stacked small banners -->
+          <div class="col-lg-3 col-md-6 order-lg-3 order-3 d-flex flex-column gap-stack">
+            <div class="hero-small hero-side w-100">
+              <img src="10th.jpg" alt="Right promo top">
               <div class="hero-caption small">
-                <h4>Laptop Power Deals</h4>
-                <p>Intel i5 / i7 | 1TB SSD</p>
-                <a href="#product-grid" class="btn-ghost">Explore</a>
+                <h4>Top Picks</h4>
+                <p>Selected premium deals</p>
+                <a href="#product-grid" class="btn-ghost">SHOP NOW</a>
               </div>
             </div>
-          </div>
 
-          <div class="col-lg-3 col-md-6">
-            <div class="hero-small">
-              <img src="1ST.png" alt="Galaxy promo">
+            <div class="hero-small hero-side w-100">
+              <img src="8th.jpg" alt="Right promo bottom">
               <div class="hero-caption small">
-                <h4>Galaxy S25 Ultra</h4>
-                <p>Powerful cameras, next-gen AI</p>
-                <a href="#product-grid" class="btn-ghost">SHOP NOW</a>
+                <h4>Accessories</h4>
+                <p>Charger, Case & More</p>
+                <a href="#product-grid" class="btn-ghost">Browse</a>
               </div>
             </div>
           </div>
@@ -165,7 +183,7 @@
       <div class="col">
         <h4>Newsletter</h4>
         <form id="newsletter">
-          <input type="email" placeholder="Enter your email" aria-label="Newsletter email"><br>
+          <input type="email" name="email" placeholder="Enter your email" aria-label="Newsletter email"><br>
           <button type="submit">Subscribe</button>
         </form>
       </div>
