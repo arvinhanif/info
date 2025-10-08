@@ -328,3 +328,97 @@ body {
     transition: none !important;
   }
 }
+
+/* -------------------------------
+   MOBILE OVERFLOW & RESPONSIVE FIXES
+   (ensures product page content stays inside viewport on phones)
+   ------------------------------- */
+
+/* smoother font rendering */
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* allow flex/grid children to shrink when necessary */
+.row, .container, .navbar, .grid, .section, .hero, .footer { min-width: 0; }
+.navbar > * { min-width: 0; }
+
+/* ensure images never force overflow */
+img, picture, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* prevent long words or URLs from expanding layout */
+body, p, h1, h2, h3, h4, h5, h6, a, span {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* make horizontal lists scrollable instead of overflowing layout */
+.categories .cat-grid,
+.cat-list {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+}
+.categories .cat-grid > * { min-width: 0; }
+
+/* ensure product-card inner flex items can shrink */
+#productsContainer .product-card,
+#productsContainer .product-card img,
+#productsContainer .product-card h4,
+#productsContainer .product-card .price {
+  min-width: 0;
+}
+
+/* reserve space for actions but allow shrinking */
+#productsContainer .product-card .actions { flex-wrap: wrap; gap: 8px; }
+
+/* hero caption safe area */
+.hero-content, .hero h1, .hero p {
+  max-width: 96%;
+  box-sizing: border-box;
+}
+
+/* adjust navbar grid to avoid fixed-width overflow on narrow screens */
+@media (max-width: 920px) {
+  .navbar { grid-template-columns: 1fr; gap: 8px; padding: 10px 12px; }
+  .nav-left { gap: 8px; }
+}
+
+/* stronger small-screen constraints */
+@media (max-width: 768px) {
+  html, body { -webkit-text-size-adjust: 100%; }
+
+  .container, .section { padding-left: 12px; padding-right: 12px; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .categories .cat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .promos { grid-template-columns: 1fr; }
+
+  /* product card: reduce min height and let image scale */
+  #productsContainer .product-card { min-height: 0; }
+  #productsContainer .product-card > img { height: auto; max-height: 240px; object-fit: contain; }
+
+  /* text sizes */
+  .hero h1 { font-size: 1.2rem; }
+  .section h2 { font-size: 1.15rem; }
+
+  /* actions layout */
+  #productsContainer .product-card .actions { padding: 10px 12px; gap: 8px; }
+
+  /* reduce large paddings that cause horizontal scroll */
+  .navbar, .hero, .section, .footer { padding-left: 10px; padding-right: 10px; }
+}
+
+/* tiniest phones */
+@media (max-width: 420px) {
+  .grid { grid-template-columns: 1fr; gap: 10px; }
+  .categories .cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  #productsContainer .product-card h4 { min-height: 40px; font-size: 0.95rem; }
+  .btn { padding: 0 10px; height: 40px; font-size: 0.95rem; }
+}
+
+/* optional: hide accidental horizontal overflow on the root if still present */
+html, body { overflow-x: hidden; }
