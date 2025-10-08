@@ -21,7 +21,7 @@ html, body { height: 100%; }
 body.site-light {
   margin: 0;
   color: rgb(var(--text));
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
   background:
     linear-gradient(180deg, rgba(246, 249, 255, 0.9), rgba(233, 238, 247, 0.9)),
     radial-gradient(1000px 600px at 20% 0%, rgba(var(--accent), 0.08), transparent 60%),
@@ -229,20 +229,78 @@ body.site-light {
   background: rgba(255,255,255,0.55);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 12px 28px rgba(var(--shadow),0.22);
 }
-.hero-large img, .hero-small img {
+
+/* helper for stacked side banners */
+.gap-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Fixed hero sizing variants */
+.hero-small.hero-side {
+  height: 250px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  display: block;
+  background: rgba(255,255,255,0.55);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 8px 20px rgba(var(--shadow),0.18);
+}
+.hero-small.hero-side img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   display: block;
 }
+
+.hero-large.hero-center {
+  height: 540px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  display: block;
+  background: rgba(255,255,255,0.55);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 14px 34px rgba(var(--shadow),0.22);
+}
+.hero-large.hero-center img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* center caption: center align text and button */
+.hero-caption.caption-center {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 36px;
+  max-width: 720px;
+  width: calc(100% - 48px);
+  text-align: center;
+  padding: 18px;
+}
+
+/* ensure side captions stay readable */
+.hero-small.hero-side .hero-caption {
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  padding: 10px;
+  max-width: 90%;
+}
+
+/* Caption styling */
 .hero-caption {
   position: absolute;
-  left: 16px; right: 16px; bottom: 16px;
-  padding: 16px;
-  border-radius: 14px;
-  background: rgba(var(--surface),0.65);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  box-shadow: inset 0 1px 2px rgba(255,255,255,0.95), 0 8px 16px rgba(var(--shadow),0.22);
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(var(--surface),0.75);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.95), 0 8px 16px rgba(var(--shadow),0.18);
 }
 .hero-caption h1, .hero-caption h4 {
   margin: 0 0 8px 0;
@@ -253,6 +311,8 @@ body.site-light {
   margin: 0 0 10px 0;
   color: rgba(var(--muted),0.95);
 }
+
+/* Buttons */
 .btn-primary, .btn-ghost {
   display: inline-flex;
   align-items: center;
@@ -325,6 +385,8 @@ body.site-light {
 #homeProducts .product-card .info {
   padding: 12px 14px;
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 #homeProducts .product-card .title {
   margin: 0 0 6px;
@@ -513,7 +575,6 @@ body.site-light {
 #newsletter button:hover { transform: translateY(-1px); }
 
 /* Responsive adjustments */
-
 /* Disable fixed background on small devices (prevents rendering issues) */
 @media (max-width: 992px) {
   body.site-light {
@@ -539,50 +600,35 @@ body.site-light {
   .cat-list li { flex: 0 0 auto; }
 }
 
-/* Hero and images: preserve aspect and avoid overflow */
-.hero-large .thumb,
-.hero-small .thumb,
-#homeProducts .product-card .thumb {
-  aspect-ratio: 16/9;
-  height: auto;
-  max-height: 220px;
-}
-.hero-large img,
-.hero-small img,
-#homeProducts .product-card .thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Product card flexibility on smaller screens */
-#homeProducts .product-card {
-  min-height: 320px;
+/* Hero responsive sizing */
+@media (max-width: 1200px) {
+  .hero-large.hero-center { height: 480px; }
+  .hero-small.hero-side { height: 220px; }
 }
 @media (max-width: 992px) {
-  #homeProducts .product-card { min-height: 300px; }
+  .hero-large.hero-center { height: 420px; }
+  .hero-small.hero-side { height: 200px; }
+  .hero-caption.caption-center {
+    left: 24px;
+    transform: none;
+    width: auto;
+    max-width: 80%;
+    text-align: center;
+  }
+}
+@media (max-width: 768px) {
+  .gap-stack { gap: 12px; }
+  .hero-small.hero-side,
+  .hero-large.hero-center { height: auto; }
+  .hero-large.hero-center img,
+  .hero-small.hero-side img { object-fit: cover; height: 220px; }
+  .hero-large.hero-center .hero-caption,
+  .hero-small.hero-side .hero-caption { left: 12px; transform: none; width: calc(100% - 24px); }
 }
 @media (max-width: 576px) {
-  #homeProducts .product-card {
-    min-height: 0;
-    padding-bottom: 10px;
-  }
-  #homeProducts .product-card .thumb { max-height: 160px; aspect-ratio: 4/3; }
-  .product-card .title { min-height: 36px; font-size: 0.95rem; }
-  .product-card .actions { gap: 8px; flex-wrap: wrap; }
-  .product-card .actions .btn-primary, .product-card .actions .btn-ghost { flex: 1 1 auto; justify-content: center; }
-}
-
-/* Container padding adjustments for very small screens */
-@media (max-width: 480px) {
-  .container { padding-left: 12px; padding-right: 12px; }
-  .header-inner { padding: 8px 0; }
-  .hero-caption { left: 12px; right: 12px; bottom: 12px; padding: 12px; }
-  .compare-btn { right: 12px; bottom: 12px; }
-  .chat-widget { left: 12px; bottom: 12px; grid-template-columns: auto; grid-auto-rows: auto; gap: 6px; align-items: center; }
-  .chat-body { order: 2; }
-  .chat-bubble { order: 1; }
+  .hero-large.hero-center img,
+  .hero-small.hero-side img { height: 180px; }
+  .hero-large.hero-center .hero-caption { max-width: 100%; }
 }
 
 /* Accessibility: ensure clickable targets remain large enough */
@@ -627,7 +673,7 @@ body.site-light {
 
 /* Vintage / "Puraton" style footer */
 .site-footer {
-  background: #f6efe6; /* warm parchment */
+  background: #f6efe6;
   color: #2b2b20;
   border-top: 1px solid rgba(43,43,32,0.06);
   padding: 40px 0;
