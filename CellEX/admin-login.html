@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="account.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .wrap {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+    }
+    .card {
+      position: relative;
+      background: rgba(255,255,255,0.9);
+      border-radius: 16px;
+      padding: 40px 24px 28px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    /* ✅ Back button */
+    .back-btn {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      border: none;
+      background: rgba(255,255,255,0.8);
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .back-btn:hover { background: rgba(255,255,255,1); }
+    .title {
+      text-align: center;
+      margin: 20px 0 30px;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #222;
+    }
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #333;
+    }
+    .input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .input:focus {
+      border-color: #f77f00;
+      box-shadow: 0 0 0 3px rgba(247,127,0,0.2);
+    }
+    /* ✅ Password wrapper */
+    .password-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .password-wrapper input {
+      flex: 1;
+      padding-right: 40px;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      cursor: pointer;
+      font-size: 1rem;
+      color: #555;
+      transition: transform 0.25s ease, color 0.25s ease;
+    }
+    .toggle-password.active {
+      color: #f77f00;
+      transform: rotate(360deg) scale(1.2);
+    }
+    .btn {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn.primary {
+      background: #f77f00;
+      color: #fff;
+    }
+    .btn.primary:hover { background: #e56e00; }
+    /* ✅ Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(247,127,0,0.95);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      opacity: 0;
+      transition: 0.3s;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <!-- ✅ Back button -->
+      <button class="back-btn" onclick="history.back()">
+        <i class="fa-solid fa-arrow-left"></i> Back
+      </button>
+
+      <h2 class="title">Admin Login</h2>
+
+      <form id="adminLoginForm" class="form">
+        <label class="label" for="adminId">Admin User ID</label>
+        <input class="input" type="text" id="adminId" required />
+
+        <label class="label" for="adminPass">Password</label>
+        <div class="password-wrapper">
+          <input class="input" type="password" id="adminPass" required />
+          <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+        </div>
+
+        <button type="submit" class="btn primary">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ✅ Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- ✅ JS -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("adminLoginForm");
+      const togglePassword = document.getElementById("togglePassword");
+      const passwordInput = document.getElementById("adminPass");
+
+      function showToast(message, color = "rgba(247,127,0,0.95)") {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.style.background = color;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 3000);
+      }
+
+      // ✅ Admin Login Validation
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const id = document.getElementById("adminId").value.trim();
+        const pass = passwordInput.value.trim();
+
+        if (id === "arvin_hanif" && pass === "arvin_hanif") {
+          showToast("Admin login successful ✅", "rgba(40,167,69,0.95)");
+          setTimeout(() => { window.location.href = "admin.html"; }, 1000);
+        } else {
+          showToast("Invalid admin credentials ❌", "rgba(220,53,69,0.95)");
+        }
+      });
+
+      // ✅ Password Show/Hide Toggle
+      togglePassword.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+
+        // Smooth animation
+        togglePassword.classList.toggle("active");
+
+        // Change icon
+        if (isPassword) {
+          togglePassword.classList.remove("fa-eye");
+          togglePassword.classList.add("fa-eye-slash");
+        } else {
+          togglePassword.classList.remove("fa-eye-slash");
+          togglePassword.classList.add("fa-eye");
+        }
+      });
+    });
+  </script>
+</body>
+</html>

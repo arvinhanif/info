@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Product — CellEX</title>
+  <meta name="description" content="Product detail page for CellEX" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Page-specific styles */
+    .product-page { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 32px; align-items: start; }
+    .product-media { display:flex; flex-direction:column; gap:12px; }
+    .product-main-img { width:100%; border-radius:12px; object-fit:cover; max-height:560px; }
+    .thumbs { display:flex; gap:8px; margin-top:6px; flex-wrap:wrap; }
+    .thumbs img { width:84px; height:64px; object-fit:cover; border-radius:8px; cursor:pointer; border:2px solid transparent; }
+    .thumbs img.active { border-color: var(--accent); }
+    .product-info h1 { font-size:24px; margin-bottom:8px; }
+    .product-info .price { font-size:20px; font-weight:700; color:var(--accent); margin-bottom:12px; }
+    .product-info .spec { font-size:15px; color:var(--muted); margin-bottom:18px; white-space:pre-wrap; }
+    .product-actions { display:flex; gap:10px; align-items:center; margin-top:12px; flex-wrap:wrap; }
+    .meta-row { display:flex; gap:8px; align-items:center; color:var(--muted); font-size:13px; margin-top:8px; }
+    @media (max-width: 768px) {
+      .product-page { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">CellEX</a>
+      <div class="actions">
+        <a href="cart.html" class="btn outline">🛒 Cart</a>
+        <a href="index.html" class="btn ghost">← Back</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <div id="productWrap" class="product-page"></div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div><h3>Company</h3><a href="#">About</a></div>
+      <div><h3>Support</h3><a href="#">Contact</a></div>
+      <div><h3>Follow</h3><a href="#">Instagram</a></div>
+      <div><h3>Newsletter</h3><input type="email" placeholder="Your email"><button class="btn">Subscribe</button></div>
+    </div>
+  </footer>
+
+  <script>
+    const LS = {
+      get(k, fallback){ try { return JSON.parse(localStorage.getItem(k)) ?? fallback; } catch { return fallback; } },
+      set(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+    };
+
+    function getParam(key){
+      try {
+        const url = new URL(window.location.href);
+        return url.searchParams.get(key);
+      } catch {
+        return null;
+      }
+    }
+
+    function formatBDT(n){ return '৳' + Number(n || 0).toLocaleString('en-US'); }
+
+    function buildGalleryHtml(images, mainIdx = 0){
+      const main = images[mainIdx] || images[0] || '';
+      const thumbs = images.map((src, i) => `<img src="${src}" data-idx="${i}" class="${i===mainIdx ? 'active':''}" alt="thumb-${i}">`).join('');
+      return { main, thumbs };
+    }
+
+    function renderProduct(){
+      const id = getParam('id');
+      const catalog = LS.get('catalog', []);
+      const p = catalog.find(x => x.id === id);
+      const wrap = document.getElementById('productWrap');
+
+      if (!wrap) return;
+
+      if (!p) {
+        wrap.innerHTML = '<div class="card"><h3>Product not found</h3><p>Product ID is missing or catalog is empty.</p><a class="btn outline" href="index.html">Go to home</a></div>';
+        return;
+      }
+
+      // Prepare images array: prefer thumb, image, then placeholder
+      const images = [];
+      if (p.image) images.push(p.image);
+      if (p.thumb && p.thumb !== p.image) images.unshift(p.thumb);
+      // accept additional images array if present
+      if (Array.isArray(p.images)) p.images.forEach(img => { if (!images.includes(img)) images.push(img); });
+      if (!images.length) images.push('https://via.placeholder.com/800x560?text=No+Image');
+
+      const gallery = buildGalleryHtml(images, 0);
+
+      wrap.innerHTML = `
+        <div class="product-media card">
+          <img id="mainImg" src="${gallery.main}" alt="${p.title}" class="product-main-img">
+          <div class="thumbs" id="thumbs">${gallery.thumbs}</div>
+        </div>
+
+        <div class="product-info card">
+          <h1>${escapeHtml(p.title || 'Untitled')}</h1>
+          <div class="price">${formatBDT(p.price)}</div>
+          <div class="spec">${escapeHtml(p.spec || 'No description available.')}</div>
+
+          <div class="meta-row">
+            <div class="small muted">Category: ${escapeHtml(p.category || '—')}</div>
+            <div class="small muted">Condition: ${escapeHtml(p.condition || 'Used')}</div>
+          </div>
+
+          <div class="product-actions">
+            <button id="addCart" class="btn primary">Add to cart</button>
+            <button id="buyNow" class="btn outline">Buy now</button>
+            <button id="shareBtn" class="btn ghost">Share</button>
+          </div>
+
+          <div id="message" class="small muted" style="margin-top:12px;"></div>
+        </div>
+      `;
+
+      // Bind gallery click
+      document.getElementById('thumbs').addEventListener('click', (e) => {
+        const img = e.target.closest('img[data-idx]');
+        if (!img) return;
+        const idx = Number(img.dataset.idx);
+        const mainImg = document.getElementById('mainImg');
+        mainImg.src = images[idx];
+        document.querySelectorAll('#thumbs img').forEach(t => t.classList.remove('active'));
+        img.classList.add('active');
+      });
+
+      // Add to cart behavior
+      document.getElementById('addCart').addEventListener('click', () => {
+        addToCart(p);
+        showMessage('Added to cart');
+      });
+
+      // Buy now behavior (add and go to checkout)
+      document.getElementById('buyNow').addEventListener('click', () => {
+        addToCart(p);
+        window.location.href = 'checkout.html';
+      });
+
+      // Share button — use Web Share API if available
+      document.getElementById('shareBtn').addEventListener('click', () => {
+        const shareData = {
+          title: p.title,
+          text: p.spec || '',
+          url: window.location.href
+        };
+        if (navigator.share) {
+          navigator.share(shareData).catch(()=> showMessage('Share cancelled'));
+        } else {
+          copyToClipboard(window.location.href);
+          showMessage('Product link copied to clipboard');
+        }
+      });
+    }
+
+    function addToCart(product){
+      const cart = LS.get('cart', []);
+      const exists = cart.find(c => c.id === product.id);
+      const item = {
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        image: product.thumb || product.image || 'https://via.placeholder.com/600x360',
+      };
+      if (exists) {
+        exists.qty = Math.max(1, (exists.qty || 1) + 1);
+      } else {
+        item.qty = 1;
+        cart.push(item);
+      }
+      LS.set('cart', cart);
+    }
+
+    function showMessage(msg){
+      const el = document.getElementById('message');
+      if (!el) return;
+      el.textContent = msg;
+      clearTimeout(showMessage._timer);
+      el.style.opacity = '1';
+      showMessage._timer = setTimeout(()=> { el.style.opacity = '0.65'; el.textContent = ''; }, 1800);
+    }
+
+    function copyToClipboard(text){
+      try {
+        navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+    }
+
+    function escapeHtml(str){
+      if (typeof str !== 'string') return str;
+      return str.replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    document.addEventListener('DOMContentLoaded', renderProduct);
+  </script>
+</body>
+</html>

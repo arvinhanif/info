@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Settings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="site-light">
+
+  <!-- Top header -->
+  <header style="position:sticky;top:0;z-index:80;background:transparent;padding:12px 20px;">
+    <div style="max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <a href="dashboard.html" class="nav-btn" style="text-decoration:none;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.6);box-shadow:0 6px 14px rgba(120,140,170,0.12);color:rgb(11,18,32);font-weight:700;">
+          <i class="fa-solid fa-arrow-left"></i> Back
+        </a>
+        <div style="font-weight:800;letter-spacing:-0.3px;margin-left:6px;">Settings</div>
+      </div>
+
+      <div>
+        <a href="index.html" class="nav-btn" style="text-decoration:none;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.6);box-shadow:0 6px 14px rgba(120,140,170,0.12);color:rgb(11,18,32);font-weight:700;">
+          <i class="fa-solid fa-house"></i> Home
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width:980px;margin:28px auto;padding:0 16px;">
+    <!-- Account -->
+    <section class="profile-card" aria-labelledby="accountSettings" style="padding:18px;margin-bottom:18px;">
+      <h2 id="accountSettings" style="margin:0 0 12px;font-weight:800;">Account</h2>
+      <p style="margin:0 0 12px;color:rgba(74,88,117,0.9);">Manage your basic account settings, security and sessions.</p>
+
+      <div style="display:grid;gap:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+          <div>
+            <div style="font-weight:700">Change password</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">Update your account password regularly.</div>
+          </div>
+          <div>
+            <button class="btn secondary" id="openChangePassFromSettings">Change</button>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+          <div>
+            <div style="font-weight:700">Two-Factor Authentication</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">Enable 2FA for stronger account protection.</div>
+          </div>
+          <div>
+            <label style="display:inline-flex;align-items:center;gap:10px;">
+              <input type="checkbox" id="toggle2fa" aria-label="Enable two factor authentication">
+              <span style="font-weight:700;color:rgba(11,18,32,0.9);">Enable</span>
+            </label>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+          <div>
+            <div style="font-weight:700">Active sessions</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">View and revoke active devices and sessions.</div>
+          </div>
+          <div>
+            <button class="btn secondary" id="manageSessionsBtn">Manage</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payments & Subscriptions -->
+    <section class="profile-card" aria-labelledby="paymentsSettings" style="padding:18px;margin-bottom:18px;">
+      <h2 id="paymentsSettings" style="margin:0 0 12px;font-weight:800;">Payments & Subscriptions</h2>
+      <p style="margin:0 0 12px;color:rgba(74,88,117,0.9);">Manage saved cards, payment methods and subscription preferences.</p>
+
+      <div style="display:grid;gap:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700">Saved payment methods</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">Add or remove cards used for checkout.</div>
+          </div>
+          <div>
+            <button class="btn secondary" id="managePaymentsBtn">Manage</button>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700">Subscriptions</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">Manage newsletter and paid subscriptions.</div>
+          </div>
+          <div>
+            <button class="btn secondary" id="manageSubsBtn">Manage</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Notifications -->
+    <section class="profile-card" aria-labelledby="notifSettings" style="padding:18px;margin-bottom:18px;">
+      <h2 id="notifSettings" style="margin:0 0 12px;font-weight:800;">Notifications</h2>
+      <p style="margin:0 0 12px;color:rgba(74,88,117,0.9);">Control which notifications you receive and how.</p>
+
+      <div style="display:grid;gap:12px;">
+        <label style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700">Email notifications</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">Order updates, promotions and messages.</div>
+          </div>
+          <input type="checkbox" id="settings_notif_email">
+        </label>
+
+        <label style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700">SMS notifications</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">Critical alerts via SMS.</div>
+          </div>
+          <input type="checkbox" id="settings_notif_sms">
+        </label>
+
+        <label style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700">In-app notifications</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">Show notifications inside the app.</div>
+          </div>
+          <input type="checkbox" id="settings_notif_inapp">
+        </label>
+
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px;">
+          <button class="btn secondary" id="resetNotifBtn">Reset</button>
+          <button class="btn primary" id="saveNotifSettingsBtn">Save</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy & Data -->
+    <section class="profile-card" aria-labelledby="privacySettings" style="padding:18px;margin-bottom:18px;">
+      <h2 id="privacySettings" style="margin:0 0 12px;font-weight:800;">Privacy & Data</h2>
+      <p style="margin:0 0 12px;color:rgba(74,88,117,0.9);">Export or delete your local account data.</p>
+
+      <div style="display:grid;gap:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700">Export my data</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">Download a JSON copy of your profile, orders and wishlist.</div>
+          </div>
+          <div>
+            <button class="btn ghost" id="exportDataSettingsBtn">Export</button>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700">Delete account</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">Permanently remove local profile data from this browser.</div>
+          </div>
+          <div>
+            <button class="btn logout" id="deleteAccountSettingsBtn">Delete</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Connected apps & integrations -->
+    <section class="profile-card" aria-labelledby="integrationsSettings" style="padding:18px;margin-bottom:18px;">
+      <h2 id="integrationsSettings" style="margin:0 0 12px;font-weight:800;">Connected Apps</h2>
+      <p style="margin:0 0 12px;color:rgba(74,88,117,0.9);">Manage third-party accounts and API tokens.</p>
+
+      <div style="display:grid;gap:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700">Connected accounts</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">Google, Apple and others.</div>
+          </div>
+          <div>
+            <button class="btn secondary" id="manageConnectedBtn">Manage</button>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700">API tokens</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">Create and revoke tokens for integrations.</div>
+          </div>
+          <div>
+            <button class="btn secondary" id="manageApiBtn">Manage</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Appearance -->
+    <section class="profile-card" aria-labelledby="appearanceSettings" style="padding:18px;margin-bottom:36px;">
+      <h2 id="appearanceSettings" style="margin:0 0 12px;font-weight:800;">Appearance</h2>
+      <p style="margin:0 0 12px;color:rgba(74,88,117,0.9);">Theme and interface preferences.</p>
+
+      <div style="display:grid;gap:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700">Color theme</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">Light or Dark mode for the UI.</div>
+          </div>
+          <div>
+            <button class="btn ghost" id="toggleThemeBtn">Toggle Theme</button>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700">Reduce animations</div>
+            <div style="color:rgba(74,88,117,0.9);font-size:0.95rem;">Respect prefers-reduced-motion for micro-animations.</div>
+          </div>
+          <div>
+            <label style="display:inline-flex;align-items:center;gap:10px;">
+              <input type="checkbox" id="reduceMotionSetting">
+              <span style="font-weight:700">Reduce</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Shared dialogs (re-use dashboard dialog structure via JS) -->
+  <div class="dialog-overlay" id="overlay" style="display:none;"></div>
+
+  <!-- Small confirm dialog for delete -->
+  <div class="message-dialog" id="confirmDeleteSmall" role="dialog" aria-modal="true" style="display:none;">
+    <h3>Confirm Delete</h3>
+    <p>Are you sure you want to delete your account locally from this browser?</p>
+    <div class="dialog-actions">
+      <button class="btn secondary" onclick="document.getElementById('confirmDeleteSmall').style.display='none';document.getElementById('overlay').style.display='none';">Cancel</button>
+      <button class="btn logout" id="confirmDeleteSmallBtn">Delete</button>
+    </div>
+  </div>
+
+  <!-- Footer note -->
+  <footer style="max-width:980px;margin:0 auto;padding:18px 16px 48px;color:rgba(74,88,117,0.9);font-size:0.95rem;text-align:center;">
+    Settings here affect only this browser's local data. For server-backed accounts use the server settings and security pages.
+  </footer>
+
+  <script>
+    // Lightweight wiring to re-use dashboard.js functions if loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      // Open change password dialog on dashboard if available
+      const openChangeBtn = document.getElementById('openChangePassFromSettings');
+      if (openChangeBtn) openChangeBtn.addEventListener('click', () => {
+        if (window.openChangePassword) window.openChangePassword();
+        else alert('Change password available from dashboard.');
+      });
+
+      // Toggle 2FA checkbox saved locally
+      const toggle2fa = document.getElementById('toggle2fa');
+      const userId = localStorage.getItem('app.currentUserId');
+      if (toggle2fa && userId) {
+        const key = 'app.2fa.' + userId;
+        toggle2fa.checked = localStorage.getItem(key) === 'true';
+        toggle2fa.addEventListener('change', () => {
+          localStorage.setItem(key, toggle2fa.checked ? 'true' : 'false');
+          alert('Two-Factor preference saved locally.');
+        });
+      }
+
+      // Notifications save
+      document.getElementById('saveNotifSettingsBtn')?.addEventListener('click', () => {
+        const user = (() => { const id = localStorage.getItem('app.currentUserId'); const users = JSON.parse(localStorage.getItem('app.users')||'[]'); return users.find(u => String(u.id)===String(id)) || null; })();
+        if (!user) { alert('No user'); return; }
+        const prefs = {
+          email: !!document.getElementById('settings_notif_email')?.checked,
+          sms: !!document.getElementById('settings_notif_sms')?.checked,
+          inapp: !!document.getElementById('settings_notif_inapp')?.checked
+        };
+        localStorage.setItem('app.notifications.' + user.id, JSON.stringify(prefs));
+        alert('Notification preferences saved.');
+      });
+
+      // Export data
+      document.getElementById('exportDataSettingsBtn')?.addEventListener('click', () => {
+        if (window.exportUserData) return window.exportUserData();
+        alert('Export not available. Please open dashboard.');
+      });
+
+      // Delete account small confirm
+      document.getElementById('deleteAccountSettingsBtn')?.addEventListener('click', () => {
+        document.getElementById('overlay').style.display='block';
+        document.getElementById('confirmDeleteSmall').style.display='block';
+      });
+      document.getElementById('confirmDeleteSmallBtn')?.addEventListener('click', () => {
+        if (window.deleteAccount) return window.deleteAccount();
+        alert('Delete account not available. Please use dashboard.');
+      });
+
+      // Theme toggle
+      document.getElementById('toggleThemeBtn')?.addEventListener('click', () => {
+        if (window.toggleTheme) return window.toggleTheme();
+        const current = localStorage.getItem('app.theme') || 'light';
+        const next = current === 'light' ? 'dark' : 'light';
+        localStorage.setItem('app.theme', next);
+        alert(next + ' theme saved locally.');
+      });
+
+      // Reduce motion toggle
+      const reduceMotion = document.getElementById('reduceMotionSetting');
+      if (reduceMotion) {
+        reduceMotion.checked = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        reduceMotion.addEventListener('change', () => {
+          alert('Reduce motion preference saved locally (UI pick).');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

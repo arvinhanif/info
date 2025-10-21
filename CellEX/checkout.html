@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Checkout — CellEX</title>
+  <meta name="description" content="Checkout page for placing orders">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .checkout-grid { display:grid; grid-template-columns: 1.2fr 1fr; gap:18px; }
+    .card { background:#fff; border:1px solid #eee; border-radius:10px; padding:16px; }
+    .card h3 { margin-bottom:12px; }
+    .form-group { display:flex; gap:10px; }
+    .form-group .field { flex:1; display:flex; flex-direction:column; gap:6px; }
+    .field label { font-weight:600; color:#333; }
+    .field input, .field select, .field textarea { padding:10px 12px; border:1px solid #ddd; border-radius:8px; }
+    .summary-item { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed #eee; }
+    .summary-item:last-child { border-bottom:none; }
+    .totals { display:flex; justify-content:space-between; font-weight:700; margin-top:10px; }
+    .coupon-row { display:flex; gap:8px; align-items:center; margin-top:10px; }
+    .coupon-row input { flex:1; }
+    .coupon-msg { font-size:13px; color:#2bb673; }
+    @media (max-width: 992px) { .checkout-grid { grid-template-columns: 1fr; } }
+
+    /* Toast */
+    #toast {
+      position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+      background: #1f2430; color: #fff; padding: 10px 14px; border-radius: 10px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.18); font-weight:600; z-index: 3000;
+      opacity: 0; pointer-events: none; transition: opacity .25s ease, transform .25s ease;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+  </style>
+</head>
+<body>
+  <header id="navbar" role="navigation">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">CellEX</a>
+      <div class="actions"><a href="cart.html" class="btn outline">← Back to Cart</a></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding:28px 0;" role="main">
+    <h2 style="margin-bottom:12px;">Checkout</h2>
+    <div class="checkout-grid">
+      <!-- Customer details -->
+      <section class="card" aria-label="Customer details">
+        <h3>Customer information</h3>
+
+        <div class="form-group">
+          <div class="field"><label for="name">Full name</label><input id="name" type="text" placeholder="Your name"></div>
+          <div class="field"><label for="phone">Phone</label><input id="phone" type="tel" placeholder="+8801XXXXXXXXX"></div>
+        </div>
+
+        <div class="form-group">
+          <div class="field"><label for="email">Email</label><input id="email" type="email" placeholder="you@example.com"></div>
+          <div class="field"><label for="city">City</label><input id="city" type="text" placeholder="Chattogram"></div>
+        </div>
+
+        <div class="field"><label for="address">Address</label><textarea id="address" rows="3" placeholder="Street, area, building"></textarea></div>
+
+        <div class="form-group">
+          <div class="field">
+            <label for="payment">Payment method</label>
+            <select id="payment">
+              <option value="cod">Cash on delivery</option>
+              <option value="bkash">bKash</option>
+              <option value="nagad">Nagad</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="notes">Order notes</label>
+            <input id="notes" type="text" placeholder="Optional note">
+          </div>
+        </div>
+
+        <button id="placeOrder" class="btn primary" style="margin-top:10px;">Place order</button>
+        <p id="orderStatus" style="margin-top:10px; font-weight:600; color:#2bb673; display:none;"></p>
+      </section>
+
+      <!-- Summary -->
+      <aside class="card" aria-label="Order summary">
+        <h3>Order summary</h3>
+        <div id="summaryItems"></div>
+
+        <div class="coupon-row">
+          <input id="coupon" type="text" placeholder="Coupon code (e.g., SAVE200)">
+          <span id="couponMsg" class="coupon-msg"></span>
+        </div>
+
+        <div class="totals" style="margin-top:10px;">
+          <span>Total</span>
+          <span id="summaryTotal">৳0</span>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer id="footer" role="contentinfo">
+    <div class="container footer-inner">
+      <div class="company-info"><h3>Company</h3><a href="#">About</a></div>
+      <div class="customer-service"><h3>Help</h3><a href="#">FAQ</a></div>
+      <div class="social"><h3>Follow</h3><a href="#">Instagram</a></div>
+      <div class="newsletter"><h3>Newsletter</h3><input type="email" placeholder="Enter your email"><button>Subscribe</button></div>
+    </div>
+  </footer>
+
+  <div id="toast" aria-live="polite" aria-atomic="true"></div>
+  <script src="checkout-scripts.js" defer></script>
+</body>
+</html>

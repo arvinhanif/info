@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Products</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- CSS -->
+  <link rel="stylesheet" href="adminproducts.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="admin.html">Dashboard</a>
+    <a href="users.html">Users</a>
+    <a href="adminproducts.html" class="active">Products</a>
+    <a href="settings.html">Settings</a>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="navbar">
+      <h1>Admin Products</h1>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="content">
+      <!-- Add Product Form -->
+      <div class="card">
+        <h3>Add New Product</h3>
+        <form id="productForm" class="form-grid">
+          <input type="text" id="pName" placeholder="Product Name" required>
+          <input type="number" id="pPrice" placeholder="Price" required>
+          <input type="number" id="pStock" placeholder="Stock" required>
+
+          <!-- Hidden file input -->
+          <input type="file" id="pImage" accept="image/*" required>
+          <!-- Styled Upload button -->
+          <label for="pImage" class="upload-btn">Upload</label>
+
+          <button type="submit" class="action-btn add">
+            <i class="fa-solid fa-plus"></i> Add Product
+          </button>
+        </form>
+      </div>
+
+      <!-- Product List -->
+      <div class="card">
+        <h3>All Products</h3>
+        <div id="productList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="dialog-overlay" id="overlay" style="display:none;"></div>
+
+  <!-- Edit Product Dialog -->
+  <div class="edit-dialog" id="editDialog" style="display:none;">
+    <h3>Edit Product</h3>
+    <form id="editForm">
+      <input type="hidden" id="editIndex">
+      <label>Name</label>
+      <input type="text" id="editName" required>
+      <label>Price</label>
+      <input type="number" id="editPrice" required>
+      <label>Stock</label>
+      <input type="number" id="editStock" required>
+      <label>Change Image</label>
+      <input type="file" id="editImage" accept="image/*">
+      <div class="dialog-actions">
+        <button type="button" class="btn secondary" onclick="closeEditForm()">Cancel</button>
+        <button type="submit" class="btn primary">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" style="display:none;"></div>
+
+  <!-- JS -->
+  <script src="adminproducts.js"></script>
+</body>
+</html>

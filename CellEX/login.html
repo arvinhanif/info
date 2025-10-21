@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Music License – User Login</title>
+
+  <!-- Google Font: Poppins -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Font Awesome for icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body class="log">
+
+  <div class="form-container" role="main" aria-labelledby="login-title">
+    <h1 id="login-title" class="form-title">
+      <i class="fas fa-sign-in-alt"></i>
+      User Login
+    </h1>
+
+    <form id="login-form" novalidate autocomplete="off">
+      <div class="input-group">
+        <i class="fas fa-envelope icon"></i>
+        <input
+          type="email"
+          id="login-email"
+          name="email"
+          placeholder="Email address"
+          required
+          autocomplete="username"
+          aria-required="true"
+        />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-lock icon"></i>
+        <input
+          type="password"
+          id="login-password"
+          name="password"
+          placeholder="Password"
+          required
+          autocomplete="current-password"
+          aria-required="true"
+        />
+        <button type="button" class="toggle-pass" aria-label="Show password">
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>
+
+      <button type="submit" id="login-btn" class="btn btn-primary">
+        <span>Login</span>
+        <i class="fas fa-arrow-right arrow-icon"></i>
+      </button>
+
+      <p id="login-msg" class="form-message" aria-live="assertive"></p>
+    </form>
+
+    <div class="action-buttons">
+      <a href="register.html" class="btn btn-secondary">
+        <i class="fas fa-user-plus"></i>
+        Register
+      </a>
+      <a href="admin.html" class="btn btn-secondary">
+        <i class="fas fa-user-shield"></i>
+        Admin Login
+      </a>
+      <a href="forgot-password.html" class="link-text">
+        <i class="fas fa-key"></i>
+        Reset Password
+      </a>
+    </div>
+  </div>
+
+  <!-- Login logic -->
+  <script src="login.js"></script>
+</body>
+</html>

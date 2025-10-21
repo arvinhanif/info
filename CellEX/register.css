@@ -1,0 +1,238 @@
+/* registration.css — Robust, Themed & Accessible */
+
+/*─────────────────────────────────────────
+  1. Theme Variables
+─────────────────────────────────────────*/
+:root {
+  /* Colors */
+  --clr-bg:           #f0f4f8;
+  --clr-surface:      rgba(255, 255, 255, 0.6);
+  --clr-text:         #1f2937;
+  --clr-label:        #4b5563;
+  --clr-border:       rgba(0, 0, 0, 0.2);
+  --clr-accent:       #2563eb;
+  --clr-accent-hover: #1e40af;
+  --clr-error:        #dc2626;
+  --clr-shadow:       rgba(0, 0, 0, 0.05);
+
+  /* Spacing */
+  --space-xxs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  1rem;
+  --space-md:  1.5rem;
+  --space-lg:  2rem;
+
+  /* Radii */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg: 16px;
+
+  /* Typography */
+  --fs-xxs: 0.75rem;
+  --fs-xs:  0.875rem;
+  --fs-sm:  1rem;
+  --fs-md:  1.125rem;
+  --fs-lg:  clamp(1.25rem, 2.5vw, 1.75rem);
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-bold:    600;
+
+  /* Transitions */
+  --trans-fast: 0.2s ease-in-out;
+  --trans-med:  0.4s ease-in-out;
+  --trans-slow: 0.6s ease-in-out;
+}
+
+/*─────────────────────────────────────────
+  2. Global Reset
+─────────────────────────────────────────*/
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  font-size: 100%;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--clr-bg), var(--clr-bg));
+  font-family: 'Poppins', sans-serif;
+  color: var(--clr-text);
+  animation: bgShift 12s var(--trans-med) infinite;
+}
+@keyframes bgShift {
+  0%,100% { background-position: 0% 50%; }
+  50%     { background-position: 100% 50%; }
+}
+
+/*─────────────────────────────────────────
+  3. Form Section Container
+─────────────────────────────────────────*/
+.form-section {
+  width: 100%;
+  max-width: 380px;
+  background: var(--clr-surface);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px var(--clr-shadow);
+  padding: var(--space-lg);
+  text-align: center;
+  animation: fadeIn var(--trans-fast) ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/*─────────────────────────────────────────
+  4. Form Title
+─────────────────────────────────────────*/
+.form-title {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-lg);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--clr-text);
+}
+
+/*─────────────────────────────────────────
+  5. Form Groups & Inputs
+─────────────────────────────────────────*/
+.form-group {
+  margin-bottom: var(--space-md);
+  text-align: left;
+}
+.form-group label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-size: var(--fs-sm);
+  color: var(--clr-label);
+  font-weight: var(--fw-medium);
+}
+.input-wrapper {
+  position: relative;
+}
+.input-wrapper .input-icon {
+  position: absolute;
+  left: var(--space-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--clr-text);
+  font-size: var(--fs-sm);
+}
+.input-wrapper input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-sm) var(--space-sm) calc(var(--space-lg) + 0.25rem);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  font-size: var(--fs-sm);
+  transition: border-color var(--trans-fast), box-shadow var(--trans-fast);
+}
+.input-wrapper input:focus {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+  outline: none;
+}
+
+/*─────────────────────────────────────────
+  6. Password Toggle Button
+─────────────────────────────────────────*/
+.toggle-password {
+  position: absolute;
+  right: var(--space-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--clr-text);
+  font-size: var(--fs-sm);
+  padding: var(--space-xxs);
+  transition: color var(--trans-fast);
+}
+.toggle-password:hover,
+.toggle-password:focus {
+  color: var(--clr-accent-dark);
+  outline: none;
+}
+
+/*─────────────────────────────────────────
+  7. Primary Button
+─────────────────────────────────────────*/
+.btn-primary {
+  width: 100%;
+  padding: var(--space-sm);
+  margin-top: var(--space-sm);
+  border: none;
+  border-radius: var(--radius-md);
+  background: rgba(37,99,235,0.1);
+  color: var(--clr-accent);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  cursor: pointer;
+  transition: background var(--trans-fast), transform var(--trans-fast), box-shadow var(--trans-fast);
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background: rgba(37,99,235,0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--clr-shadow);
+  outline: none;
+}
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/*─────────────────────────────────────────
+  8. Form Feedback Message
+─────────────────────────────────────────*/
+.form-message {
+  margin-top: var(--space-xs);
+  min-height: 1.2em;
+  font-size: var(--fs-xs);
+  text-align: left;
+  color: var(--clr-error);
+}
+
+/*─────────────────────────────────────────
+  9. Footer Links
+─────────────────────────────────────────*/
+.form-footer {
+  margin-top: var(--space-md);
+  font-size: var(--fs-sm);
+}
+.form-footer a {
+  color: var(--clr-accent);
+  text-decoration: none;
+  transition: color var(--trans-fast);
+}
+.form-footer a:hover,
+.form-footer a:focus {
+  color: var(--clr-accent-dark);
+  text-decoration: underline;
+  outline: none;
+}
+
+/*─────────────────────────────────────────
+  10. Responsive Adjustments
+─────────────────────────────────────────*/
+@media (max-width: 400px) {
+  .form-section {
+    padding: var(--space-md);
+  }
+}

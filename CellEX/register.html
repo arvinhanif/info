@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Music License – Register</title>
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- reuse your login.css for styling -->
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body class="log">
+
+  <div class="form-container" role="main" aria-labelledby="register-title">
+    <h1 id="register-title" class="form-title">
+      <i class="fas fa-user-plus"></i>
+      Create Account
+    </h1>
+
+    <form id="register-form" novalidate>
+      <div class="input-group">
+        <i class="fas fa-user icon"></i>
+        <input type="text" id="reg-name" placeholder="Full Name" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-envelope icon"></i>
+        <input type="email" id="reg-email" placeholder="Email address" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-phone icon"></i>
+        <input type="tel" id="reg-phone" placeholder="Phone Number" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-lock icon"></i>
+        <input type="password" id="reg-password" placeholder="Password" required />
+        <button type="button" class="toggle-pass" aria-label="Show password">
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        <span>Register</span>
+        <i class="fas fa-arrow-right arrow-icon"></i>
+      </button>
+
+      <p id="register-msg" class="form-message" aria-live="assertive"></p>
+    </form>
+
+    <!-- show the generated code here -->
+    <div id="code-container" class="form-message" style="margin-top:1rem; display:none;">
+      <strong>Recovery Code:</strong>
+      <span id="recovery-code" style="font-family:monospace; font-size:1.1rem;"></span>
+      <br/>
+      Please screenshot or copy this code now. You will need it to reset your password.
+    </div>
+
+    <div class="action-buttons" style="margin-top:2rem;">
+      <a href="login.html" class="btn btn-secondary">
+        <i class="fas fa-sign-in-alt"></i>
+        Go to Login
+      </a>
+      <a href="forgot-password.html" class="link-text">
+        <i class="fas fa-key"></i>
+        Forgot Password
+      </a>
+    </div>
+  </div>
+
+  <!-- registration logic -->
+  <script src="register.js"></script>
+</body>
+</html>
