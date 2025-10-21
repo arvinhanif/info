@@ -1,6 +1,6 @@
 // File: server.js
-// Simple demo API with signup/login (JWT), users CRUD for admin, products/orders/upload kept minimal.
-// Storage: ./data (JSON files). NOT FOR PRODUCTION.
+// Simple JSON-file backend that stores users server-side so accounts created from any device appear in admin page.
+// NOT FOR PRODUCTION.
 
 require('dotenv').config();
 const express = require('express');
@@ -35,10 +35,12 @@ function writeJson(filePath, data) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
 }
 
-// Seed admin if not exists (default credentials)
+// Seed admin and users files if missing
 if (!fs.existsSync(ADMIN_FILE)) {
-  const hash = bcrypt.hashSync('adminpassword', 10);
-  writeJson(ADMIN_FILE, { email: 'admin@cellex.local', passwordHash: hash });
+  const adminPass = process.env.ADMIN_PASSWORD || 'adminpassword';
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@cellex.local';
+  const hash = bcrypt.hashSync(adminPass, 10);
+  writeJson(ADMIN_FILE, { email: adminEmail, passwordHash: hash });
 }
 if (!fs.existsSync(USERS_FILE)) writeJson(USERS_FILE, []);
 
@@ -50,10 +52,10 @@ function verifyToken(token) { try { return jwt.verify(token, JWT_SECRET); } catc
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
-app.use(express.static(path.join(__dirname, 'public'))); // serve frontend
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(UPLOADS_DIR));
 
-// Multer
+// Multer (uploads)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, UPLOADS_DIR),
   filename: (req, file, cb) => {
@@ -63,7 +65,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage, limits: { fileSize: 8 * 1024 * 1024 } });
 
-// Admin auth middleware
+// Admin auth middleware (expects token with { admin: true })
 function requireAdmin(req, res, next) {
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith('Bearer ')) return res.status(401).json({ error: 'Missing token' });
@@ -78,52 +80,62 @@ function requireAdmin(req, res, next) {
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
-// AUTH: admin login
+// Admin login (returns admin token)
 app.post('/api/auth/login', async (req, res) => {
-  const { email, password } = req.body || {};
-  if (!email || !password) return res.status(400).json({ error: 'email and password required' });
-  const admin = readJson(ADMIN_FILE, {});
-  if (!admin || !admin.passwordHash) return res.status(500).json({ error: 'Admin not configured' });
-  const ok = await bcrypt.compare(password, admin.passwordHash);
-  if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
-  const token = signToken({ admin: true, email: admin.email });
-  res.json({ token, expiresIn: TOKEN_EXPIRY });
-});
-
-// AUTH: public signup (creates user stored server-side)
-app.post('/api/auth/signup', async (req, res) => {
   try {
-    const { name, email, number, address, password, location, ip } = req.body || {};
-    if (!name || !email || !password) return res.status(400).json({ error: 'Missing required fields' });
-
-    const users = readJson(USERS_FILE, []);
-    if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-      return res.status(409).json({ error: 'Email already registered' });
-    }
-
-    const id = 'u_' + nanoid(8);
-    const password_hash = await bcrypt.hash(password, 10);
-    const createdAt = new Date().toISOString();
-    const user = {
-      id, name, email, number: number || '', address: address || '',
-      passwordHash: password_hash,
-      ip: ip || null,
-      location: location || null,
-      createdAt
-    };
-    users.push(user);
-    writeJson(USERS_FILE, users);
-
-    // issue a token for client (note: token here is simple user token, not admin)
-    const token = signToken({ userId: id, email });
-    res.json({ message: 'Account created', token, user: { id, name, email, number, address, createdAt } });
+    const { email, password } = req.body || {};
+    if (!email || !password) return res.status(400).json({ error: 'email and password required' });
+    const admin = readJson(ADMIN_FILE, {});
+    if (!admin || !admin.passwordHash) return res.status(500).json({ error: 'Admin not configured' });
+    const ok = await bcrypt.compare(password, admin.passwordHash);
+    if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
+    const token = signToken({ admin: true, email: admin.email });
+    res.json({ token, expiresIn: TOKEN_EXPIRY });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// AUTH: public login for users (returns token)
+// Public signup - stores user on server in data/users.json
+app.post('/api/auth/signup', async (req, res) => {
+  try {
+    const { name, email, number, address, password, location, ip } = req.body || {};
+    if (!name || !email || !password) return res.status(400).json({ error: 'Missing required fields' });
+
+    const users = readJson(USERS_FILE, []);
+    if (users.some(u => u.email.toLowerCase() === String(email).toLowerCase())) {
+      return res.status(409).json({ error: 'Email already registered' });
+    }
+
+    const id = 'u_' + nanoid(8);
+    const passwordHash = await bcrypt.hash(password, 10);
+    const createdAt = new Date().toISOString();
+    const user = {
+      id,
+      name,
+      email,
+      number: number || '',
+      address: address || '',
+      passwordHash,
+      ip: ip || null,
+      location: location || null,
+      createdAt
+    };
+
+    users.push(user);
+    writeJson(USERS_FILE, users);
+
+    // Issue user token for client session (not admin)
+    const token = signToken({ userId: id, email });
+    res.status(201).json({ message: 'Account created', token, user: { id, name, email, number: user.number, address: user.address, createdAt } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Public user login (returns user token)
 app.post('/api/auth/user-login', async (req, res) => {
   try {
     const { email, password } = req.body || {};
@@ -141,36 +153,47 @@ app.post('/api/auth/user-login', async (req, res) => {
   }
 });
 
-// ADMIN: get all users (protected)
+// Admin endpoint: list users (no passwordHash)
 app.get('/api/users', requireAdmin, (req, res) => {
-  const users = readJson(USERS_FILE, []).map(u => ({
-    id: u.id, name: u.name, email: u.email, number: u.number, address: u.address,
-    ip: u.ip, location: u.location, createdAt: u.createdAt
-  }));
-  res.json({ users });
-});
-
-// ADMIN: create user
-app.post('/api/users', requireAdmin, async (req, res) => {
   try {
-    const { name, email, number, address, password } = req.body || {};
-    if (!name || !email || !password) return res.status(400).json({ error: 'name,email,password required' });
-    const users = readJson(USERS_FILE, []);
-    if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) return res.status(409).json({ error: 'Email exists' });
-    const id = 'u_' + nanoid(8);
-    const passwordHash = await bcrypt.hash(password, 10);
-    const createdAt = new Date().toISOString();
-    const user = { id, name, email, number: number || '', address: address || '', passwordHash, ip: null, location: null, createdAt };
-    users.push(user);
-    writeJson(USERS_FILE, users);
-    res.status(201).json({ user: { id, name, email, number, address, createdAt } });
+    const users = readJson(USERS_FILE, []).map(u => ({
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      number: u.number,
+      address: u.address,
+      ip: u.ip,
+      location: u.location,
+      createdAt: u.createdAt
+    }));
+    res.json({ users });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// ADMIN: update user
+// Admin create user
+app.post('/api/users', requireAdmin, async (req, res) => {
+  try {
+    const { name, email, number, address, password } = req.body || {};
+    if (!name || !email || !password) return res.status(400).json({ error: 'name,email,password required' });
+    const users = readJson(USERS_FILE, []);
+    if (users.some(u => u.email.toLowerCase() === String(email).toLowerCase())) return res.status(409).json({ error: 'Email exists' });
+    const id = 'u_' + nanoid(8);
+    const passwordHash = await bcrypt.hash(password, 10);
+    const createdAt = new Date().toISOString();
+    const user = { id, name, email, number: number || '', address: address || '', passwordHash, ip: null, location: null, createdAt };
+    users.push(user);
+    writeJson(USERS_FILE, users);
+    res.status(201).json({ user: { id, name, email, number: user.number, address: user.address, createdAt } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Admin update user
 app.put('/api/users/:id', requireAdmin, async (req, res) => {
   try {
     const id = req.params.id;
@@ -191,7 +214,7 @@ app.put('/api/users/:id', requireAdmin, async (req, res) => {
   }
 });
 
-// ADMIN: delete user
+// Admin delete user
 app.delete('/api/users/:id', requireAdmin, (req, res) => {
   try {
     const id = req.params.id;

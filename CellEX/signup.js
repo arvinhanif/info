@@ -1,14 +1,17 @@
-// File: public/signup.js
+// File: signup.js
+// Sends signup data to server so accounts are stored centrally (not only localStorage)
+
 document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById('signupForm');
-  const loginBtn = document.getElementById('loginBtn');
 
   function showToast(message, color = "rgba(76,156,255,0.95)") {
     const toast = document.getElementById("toast");
-    toast.textContent = message;
-    toast.style.background = color;
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 3000);
+    if (toast) {
+      toast.textContent = message;
+      toast.style.background = color;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    } else alert(message);
   }
 
   const getGeoLocation = () =>
@@ -31,11 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirm = document.getElementById('confirm').value.trim();
 
     if (!name || !email || !number || !address || !pass || !confirm) {
-      showToast('Please fill all fields ❌', 'rgba(220,53,69,0.95)');
+      showToast('Please fill all fields', 'rgba(220,53,69,0.95)');
       return;
     }
     if (pass !== confirm) {
-      showToast('Passwords do not match ❌', 'rgba(220,53,69,0.95)');
+      showToast('Passwords do not match', 'rgba(220,53,69,0.95)');
       return;
     }
 
@@ -50,15 +53,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Signup failed');
 
-      if (data.token) localStorage.setItem('app.token', data.token);
+      if (data.token) localStorage.setItem('app.userToken', data.token);
       if (data.user && data.user.id) localStorage.setItem('app.currentUserId', data.user.id);
 
-      showToast('Account created successfully ✅', 'rgba(40,167,69,0.95)');
-      setTimeout(() => { window.location.href = "login.html"; }, 900);
+      showToast('Account created successfully', 'rgba(40,167,69,0.95)');
+      setTimeout(() => { location.href = 'login.html'; }, 800);
     } catch (err) {
-      showToast(err.message || 'Signup error ❌', 'rgba(220,53,69,0.95)');
+      showToast(err.message || 'Signup error', 'rgba(220,53,69,0.95)');
     }
   });
-
-  if (loginBtn) loginBtn.addEventListener('click', () => { window.location.href = "login.html"; });
 });
